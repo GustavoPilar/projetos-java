@@ -1,4 +1,4 @@
-package model;
+package model.Exceptions;
 
 public class DomainExceptions extends Exception {
 

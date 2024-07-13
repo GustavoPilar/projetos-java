@@ -1,15 +1,16 @@
 package model.entities;
 
+import application.UI;
+
 import java.util.Random;
 
-public class Opponent {
-    private final Character opponent = 'O';
-
-    public Character getOpponent() {
-        return opponent;
+public final class Pc extends Player{
+    public Pc(Character pc) {
+        super(pc);
     }
 
-    public void oppenentMove() {
+    @Override
+    public void playerMove() {
         Random generator = new Random();
         int row, collumn;
 
@@ -19,10 +20,10 @@ public class Opponent {
                 collumn = generator.nextInt(3);
             } while (Frame.getFrame(row, collumn) != ' ');
 
-            Frame.setFrame((row), (collumn), getOpponent());
+            Frame.setFrame((row), (collumn), getPlayer());
         }
         else {
-            Frame.showWinner(' ');
+            UI.showWinner(' ');
         }
     }
 }
