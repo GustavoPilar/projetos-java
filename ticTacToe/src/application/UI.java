@@ -7,6 +7,8 @@ import model.entities.User;
 public class UI {
 
     static Frame frame;
+    static Character winner = ' ';
+    static Character answer = ' ';
 
     public static Frame choosePlayers(int choose) {
         if (choose == 1) {
@@ -59,5 +61,19 @@ public class UI {
         } else {
             System.out.println("TIE.");
         }
+    }
+
+    public static Character playAgain() {
+        System.out.print("Do you wanna play again? (Y/N) ");
+        answer = Main.sc.next().toUpperCase().charAt(0);
+        if(answer != 'Y') {
+            System.out.println("Game over. Thanks for playing. ");
+        }
+        return answer;
+    }
+
+    public static void reset() {
+        winner = ' ';
+        answer = ' ';
     }
 }

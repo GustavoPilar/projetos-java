@@ -11,23 +11,21 @@ public class Main {
     public static void main(String[] args) {
         UI.frame = UI.choosePlayers(UI.__init__());
 
-        Character answer = ' ';
-        Character winner = ' ';
         do {
-            winner = ' ';
+            UI.reset();
             Frame.resetFrame();
 
-            while (UI.frame.checkWinner() == ' ' && Frame.checkWhiteSpaces() != 0) {
+            while (Frame.checkWinner() == ' ' && Frame.checkWhiteSpaces() != 0) {
                 try {
-                    UI.frame.getPlayer1().playerMove();
-                    winner = UI.frame.checkWinner();
-                    if (UI.frame.checkWinner() != ' ' || UI.frame.checkWhiteSpaces() == 0) {
+                    Frame.getPlayer1().playerMove();
+                    UI.winner = Frame.checkWinner();
+                    if (Frame.checkWinner() != ' ' || Frame.checkWhiteSpaces() == 0) {
                         break;
                     }
 
-                    UI.frame.getPlayer2().playerMove();
-                    winner = UI.frame.checkWinner();
-                    if (UI.frame.checkWinner() != ' ' || UI.frame.checkWhiteSpaces() == 0) {
+                    Frame.getPlayer1().playerMove();
+                    UI.winner = Frame.checkWinner();
+                    if (Frame.checkWinner() != ' ' || Frame.checkWhiteSpaces() == 0) {
                         break;
                     }
                 }
@@ -37,13 +35,11 @@ public class Main {
             }
 
             UI.showFrame();
-            UI.showWinner(winner);
+            UI.showWinner(UI.winner);
 
-            System.out.print("Do you wanna play again? (Y/N) ");
-            answer = sc.next().toUpperCase().charAt(0);
-        } while (answer == 'Y');
+            UI.playAgain();
+        } while (UI.answer == 'Y');
 
-        System.out.println("Game over. Thanks for playing");
         sc.close();
     }
 }
