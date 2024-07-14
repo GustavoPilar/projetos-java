@@ -1,17 +1,15 @@
 package model.entities;
 
-import model.Exceptions.DomainExceptions;
-
 public abstract class Player {
-    private Character player;
+    private final Character player;
 
     public Player(Character player) {
         this.player = player;
     }
 
-    public Character getPlayer() {
+    public final Character getPlayer() {
         return player;
     }
 
-    abstract public void playerMove() throws DomainExceptions;
+    abstract public void playerMove();
 }
