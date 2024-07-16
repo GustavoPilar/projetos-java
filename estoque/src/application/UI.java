@@ -20,13 +20,20 @@ public class UI {
         System.out.println("|     Bem vindo(a)    |");
         System.out.println("|---------------------|");
         System.out.println("|  [1] - Comprar      |");
-        System.out.println("|  [2] - Sair         |");
+        System.out.println("|  [2] - Gerar Nota   |");
+        System.out.println("|  [3] - Sair         |");
         System.out.println("|---------------------|");
         System.out.print("Escolha: ");
         escolha = Main.sc.nextInt();
         if (escolha == 1) {
             comprar();
         }
+        if (escolha == 2) {
+            Carrinho.gerarNotaFiscal(new File("C:\\Users\\pilar\\OneDrive\\Documentos\\java\\projetos\\estoque\\notaFiscal.txt"));
+            System.out.println("Nota fiscal gerada!");
+            return;
+        }
+
 
         System.out.println("Obrigado por comprar! Volte sempre.");
     }
@@ -90,38 +97,6 @@ public class UI {
             if (escolha == 6) {
                 showProducts("frios");
             }
-
-            String notaFiscal = "C:\\Users\\pilar\\OneDrive\\Documentos\\java\\projetos\\estoque\\notaFiscal.txt";
-            try(BufferedWriter bw = new BufferedWriter(new FileWriter(notaFiscal))) {
-                bw.write("====================================");
-                bw.newLine();
-                bw.write("             NOTA FISCAL            ");
-                bw.newLine();
-                bw.write("====================================");
-                bw.newLine();
-                for(Produto p : Carrinho.produtosCarrinho) {
-                    bw.write("Produto: " + p.getNome());
-                    bw.newLine();
-                    bw.write("Valor: R$" + p.getPreco());
-                    bw.newLine();
-                    bw.write("Quantidade: " + p.getQuantidade());
-                    bw.newLine();
-                    bw.write("---------------------");
-                    bw.newLine();
-                    bw.write("====================================");
-                    bw.newLine();
-                    bw.write("Valor total: " + String.format("%.2f", Carrinho.compraTotal()));
-                    bw.newLine();
-                    bw.write("====================================");
-                    bw.newLine();
-                }
-            }
-            catch (RuntimeException e) {
-                System.out.println("Error: " + e.getMessage());
-            }
-
-            System.out.println("Nota fiscal Gerada.");
-
         }
         catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -147,7 +122,7 @@ public class UI {
 
         for(Produto p : temp) {
             if(p.getNome().equals(nomeProduto)) {
-                while (quantidade < 0 || quantidade < p.getPreco()) {
+                while (quantidade < 0 || quantidade < p.getQuantidade()) {
                     System.out.println("quantidade inválida. Digite novamente. ");
                     quantidade = Main.sc.nextInt();
                 }
@@ -156,11 +131,5 @@ public class UI {
                 System.out.println("Adicionado ao carrinho.");
             }
         }
-        pause();
-    }
-
-    public static void pause() {
-        System.out.println("Aperte qualquer tecla....");
-        char n = Main.sc.next().charAt(0);
     }
 }
