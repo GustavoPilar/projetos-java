@@ -1,0 +1,50 @@
+Pão francês,0.99,Padaria,99
+Pão integral,1.49,Padaria,72
+Bolo de chocolate,12.99,Padaria,49
+Bolo de cenoura,10.99,Padaria,65
+Croissant,3.99,Padaria,54
+Torta de maçã,14.99,Padaria,62
+Biscoito,2.49,Padaria,76
+Rosquinha,1.99,Padaria,36
+Refrigerante Coca-Cola,6.49,Bebidas,53
+Refrigerante Pepsi,5.99,Bebidas,57
+Suco de laranja,7.49,Bebidas,87
+Suco de uva,8.49,Bebidas,46
+Água mineral,2.49,Bebidas,62
+Chá gelado,4.99,Bebidas,80
+Cerveja,3.99,Bebidas,79
+Vinho,19.99,Bebidas,18
+Carne bovina,24.99,Carnes,21
+Frango,14.99,Carnes,33
+Peixe,29.99,Carnes,30
+Porco,19.99,Carnes,32
+Linguiça,12.99,Carnes,88
+Hambúrguer,15.99,Carnes,44
+Bacon,18.99,Carnes,48
+Salsicha,11.49,Carnes,65
+Shampoo,12.99,Higiene,75
+Condicionador,13.49,Higiene,28
+Sabonete,2.49,Higiene,23
+Creme dental,8.99,Higiene,24
+Desodorante,9.99,Higiene,100
+Papel higiênico,5.99,Higiene,54
+Escova de dentes,3.99,Higiene,22
+Enxaguante bucal,14.99,Higiene,98
+Maçã,1.99,Frutas,40
+Banana,0.99,Frutas,40
+Laranja,2.49,Frutas,96
+Pera,2.99,Frutas,72
+Melancia,5.99,Frutas,27
+Mamão,3.99,Frutas,62
+Uva,4.99,Frutas,76
+Morango,6.99,Frutas,72
+Abacaxi,7.99,Frutas,20
+Kiwi,3.49,Frutas,93
+Queijo mussarela,23.99,Frios,23
+Queijo prato,24.99,Frios,20
+Presunto,22.49,Frios,31
+Salame,25.99,Frios,58
+Mortadela,19.99,Frios,45
+Peito de peru,28.99,Frios,58
+Queijo parmesão,34.99,Frios,53
+Queijo brie,39.99,Frios,33

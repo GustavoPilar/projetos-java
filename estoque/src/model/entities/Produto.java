@@ -1,23 +1,18 @@
 package model.entities;
 
-import javax.naming.ldap.SortResponseControl;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+
 import java.util.Objects;
 
 public final class Produto implements Comparable<Produto>{
-    public static DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private final String nome;
     private final Double preco;
-    private final LocalDate dataFabriacao;
     private Integer quantidade;
 
     private Departamento departamento;
 
-    public Produto(String nome, Double preco, LocalDate dataFabriacao, Departamento departamento, Integer quantidade) {
+    public Produto(String nome, Double preco, Departamento departamento, Integer quantidade) {
         this.nome = nome;
         this.preco = preco;
-        this.dataFabriacao = dataFabriacao;
         this.departamento = departamento;
         this.quantidade = quantidade;
     }
@@ -28,10 +23,6 @@ public final class Produto implements Comparable<Produto>{
 
     public Double getPreco() {
         return preco;
-    }
-
-    public LocalDate getDataFabriacao() {
-        return dataFabriacao;
     }
 
     public Integer getQuantidade() {
@@ -62,7 +53,7 @@ public final class Produto implements Comparable<Produto>{
     @Override
     public String toString() {
         return getNome() + ", R$"
-                + String.format("%.2f ", getPreco())
+                + String.format("%.2f", getPreco())
                 + ", quantidade: " + getQuantidade();
     }
 

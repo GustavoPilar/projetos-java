@@ -1,5 +1,7 @@
 package model.entities;
 
+import application.Main;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -11,24 +13,40 @@ public final class Carrinho {
 
     public static Set<Produto> produtosCarrinho = new LinkedHashSet<>();
 
-    public Carrinho() {
-    }
+    public static void addCarrinho(Produto produto, Integer quantidade) {
 
-    public static void addCarrinho(Produto produto, Integer quatidade) {
-        if(produtosCarrinho.contains(produto)) {
-            produto.setQuantidade(produto.getQuantidade() + quatidade);
+        for(Produto p : produtosCarrinho) {
+            if(p.getNome().equals(produto.getNome())) {
+                p.setQuantidade(p.getQuantidade() + quantidade);
+                produto = p;
+                produtosCarrinho.removeIf(x -> x.getNome().equals(p.getNome()));
+            }
         }
-        else {
-            produtosCarrinho.add(produto);
-        }
+
+        produtosCarrinho.add(produto);
     }
 
     public static Double compraTotal() {
-        Double sum = 0.0;
+        double sum = 0.0;
         for(Produto p : produtosCarrinho) {
             sum += p.getPreco() * p.getQuantidade();
         }
         return sum;
+    }
+
+    public static void verCarrinho() {
+        int resposta;
+        do {
+            System.out.println(" ------ Produtos ------ ");
+            for(Produto p : produtosCarrinho) {
+                System.out.println(p);
+            }
+            System.out.println("------------------------");
+            System.out.println(String.format("R$%.2f", compraTotal()));
+            System.out.println("------------------------");
+            System.out.println("[1] - Voltar");
+            resposta = Main.sc.nextInt();
+        } while (resposta != 1);
     }
 
     public static void gerarNotaFiscal(File file) {
@@ -39,7 +57,7 @@ public final class Carrinho {
             bw.newLine();
             bw.write("====================================");
             bw.newLine();
-            for(Produto p : Carrinho.produtosCarrinho) {
+            for(Produto p : produtosCarrinho) {
                 bw.write("Produto: " + p.getNome());
                 bw.newLine();
                 bw.write("Valor: R$" + p.getPreco());
@@ -50,7 +68,7 @@ public final class Carrinho {
                 bw.newLine();
                 bw.write("====================================");
                 bw.newLine();
-                bw.write("Valor total: " + String.format("%.2f", Carrinho.compraTotal()));
+                bw.write("Valor total: R$" + String.format("%.2f", compraTotal()));
                 bw.newLine();
                 bw.write("====================================");
                 bw.newLine();
@@ -60,11 +78,6 @@ public final class Carrinho {
             System.out.println("Error: " + e.getMessage());
         }
 
-    }
-
-    @Override
-    public String toString() {
-        return "Valor total: R$" + String.format("%.2f", compraTotal());
     }
 }
 
