@@ -8,9 +8,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class UI {
     static Set<Produto> produtos = new HashSet<>();
@@ -19,7 +17,7 @@ public class UI {
     public static void init() {
         int escolha;
         do {
-            System.out.println("|---------------------|");
+            System.out.println("\n|---------------------|");
             System.out.println("|     Bem vindo(a)    |");
             System.out.println("|---------------------|");
             System.out.println("|  [1] - Comprar      |");

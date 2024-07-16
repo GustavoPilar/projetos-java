@@ -56,8 +56,8 @@ public final class Carrinho {
             bw.write("             NOTA FISCAL            ");
             bw.newLine();
             bw.write("====================================");
-            bw.newLine();
             for(Produto p : produtosCarrinho) {
+                bw.newLine();
                 bw.write("Produto: " + p.getNome());
                 bw.newLine();
                 bw.write("Valor: R$" + p.getPreco());
@@ -66,13 +66,14 @@ public final class Carrinho {
                 bw.newLine();
                 bw.write("---------------------");
                 bw.newLine();
-                bw.write("====================================");
-                bw.newLine();
-                bw.write("Valor total: R$" + String.format("%.2f", compraTotal()));
+                bw.write("Valor: R$" + String.format("%.2f", (p.getPreco() * p.getQuantidade())));
                 bw.newLine();
                 bw.write("====================================");
-                bw.newLine();
             }
+            bw.newLine();
+            bw.write("Valor total: R$" + String.format("%.2f", compraTotal()));
+            bw.newLine();
+            bw.write("====================================");
         }
         catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
