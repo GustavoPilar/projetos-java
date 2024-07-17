@@ -8,8 +8,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class UI {
     static Set<Produto> produtos = new HashSet<>();
@@ -92,24 +91,31 @@ public class UI {
                 }
 
                 if (escolha == 1) {
+                    clearScreen();
                     showProducts("PADARIA");
                 }
                 if (escolha == 2) {
+                    clearScreen();
                     showProducts("BEBIDAS");
                 }
                 if (escolha == 3) {
+                    clearScreen();
                     showProducts("CARNES");
                 }
                 if (escolha == 4) {
+                    clearScreen();
                     showProducts("HIGIENE");
                 }
                 if (escolha == 5) {
+                    clearScreen();
                     showProducts("FRUTAS");
                 }
                 if (escolha == 6) {
+                    clearScreen();
                     showProducts("FRIOS");
                 }
                 if (escolha == 7) {
+                    clearScreen();
                     Carrinho.verCarrinho();
                 }
             } while (escolha != 8);
@@ -121,29 +127,45 @@ public class UI {
         }
     }
 
-    public static void showProducts(String departamento) {
-        System.out.println("\nProdutos: ");
+    public static void showProducts(String departamento) throws IOException, InterruptedException {
+        Set<Produto> temp = new TreeSet<>(produtos);
+        temp.removeIf(x -> !Objects.equals(x.getDepartamento().getNomeDepartamento(), departamento));
+        Produto[] produtosTemp = new Produto[temp.size()];
 
-        for (Produto p : produtos) {
-            if(p.getDepartamento().getNomeDepartamento().equals(departamento)) {
-                System.out.println("||" + p);
-            }
+        System.out.println("\nProdutos de " + departamento.toUpperCase() + ":");
+        int i = 0;
+        for(Produto p : temp) {
+            produtosTemp[i] = p;
+            System.out.println("[" + (i+1) + "] - " + p);
+            i++;
         }
 
-        System.out.print("Digite o nome do produto: ");
+        System.out.print("Digite o codigo do produto: ");
         Main.sc.nextLine();
-        String nomeProduto = Main.sc.nextLine().toUpperCase();
+        int codeProduto = Main.sc.nextInt();
 
+        while(!(codeProduto > 0 && codeProduto < produtosTemp.length)) {
+            System.out.println("Valor inválido, digite novamente: ");
+            codeProduto = Main.sc.nextInt();
+        }
+
+        clearScreen();
+        System.out.println("\nProduto de " + departamento.toUpperCase() + ":");
+        System.out.println("|| " + produtosTemp[codeProduto-1]);
+
+        i = 0;
         for (Produto p : produtos) {
-            if(p.getNome().equals(nomeProduto)) {
-                System.out.print("Quantidade: ");
+            if(p.getNome().equals(produtosTemp[codeProduto-1].getNome())) {
+                System.out.print("Digite a quantidade de " + p.getNome());
                 int quantidade = Main.sc.nextInt();
                 Produto produto = new Produto(p.getNome(), p.getPreco(), p.getDepartamento(), quantidade);
                 Carrinho.addCarrinho(produto, produto.getQuantidade());
                 p.setQuantidade(p.getQuantidade() - quantidade);
 
                 System.out.println("Adicionado ao carrinho!");
+                Thread.sleep(1000);
             }
+            i++;
         }
     }
 }
