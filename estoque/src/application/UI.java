@@ -39,7 +39,7 @@ public class UI {
         do {
             clearScreen();
             System.out.println("|---------------------|");
-            System.out.println("| BEM VINDO(A), " + user);
+            System.out.println("| BEM VINDO(A), " + user.toUpperCase());
             System.out.println("|---------------------|");
             System.out.println("|      MERCADINHO     |");
             System.out.println("|---------------------|");
