@@ -1,11 +1,11 @@
 ====================================
              NOTA FISCAL            
 ====================================
-Produto: PÃO FRANCÊS
-Valor: R$0.99
-Quantidade: 5
+PRODUTO: ROSQUINHA
+VALOR: R$1.99
+QUANTIDADE: 2
 ---------------------
-Valor: R$4,95
+VALOR: R$3,98
 ====================================
-Valor total: R$4,95
+VALOR TOTAL: R$3,98
 ====================================

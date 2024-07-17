@@ -3,10 +3,7 @@ package model.entities;
 import application.Main;
 import application.UI;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -38,14 +35,14 @@ public final class Carrinho {
     public static void verCarrinho() {
         int resposta;
         do {
-            System.out.println(" ------ Produtos ------ ");
+            System.out.println(" ------ PRODUTOS ------ ");
             for(Produto p : produtosCarrinho) {
                 System.out.println(p);
             }
             System.out.println("------------------------");
             System.out.println(String.format("R$%.2f", compraTotal()));
             System.out.println("------------------------");
-            System.out.println("[1] - Voltar");
+            System.out.println("[1] - VOLTAR");
             resposta = Main.sc.nextInt();
         } while (resposta != 1);
     }
@@ -56,30 +53,34 @@ public final class Carrinho {
             bw.newLine();
             bw.write("             NOTA FISCAL            ");
             bw.newLine();
+            bw.write("Comprador: " + UI.user);
+            bw.newLine();
             bw.write("====================================");
             for(Produto p : produtosCarrinho) {
                 bw.newLine();
-                bw.write("Produto: " + p.getNome());
+                bw.write("PRODUTO: " + p.getNome());
                 bw.newLine();
-                bw.write("Valor: R$" + p.getPreco());
+                bw.write("VALOR: R$" + p.getPreco());
                 bw.newLine();
-                bw.write("Quantidade: " + p.getQuantidade());
+                bw.write("QUANTIDADE: " + p.getQuantidade());
                 bw.newLine();
                 bw.write("---------------------");
                 bw.newLine();
-                bw.write("Valor: R$" + String.format("%.2f", (p.getPreco() * p.getQuantidade())));
+                bw.write("VALOR: R$" + String.format("%.2f", (p.getPreco() * p.getQuantidade())));
                 bw.newLine();
                 bw.write("====================================");
             }
             bw.newLine();
-            bw.write("Valor total: R$" + String.format("%.2f", compraTotal()));
+            bw.write("VALOR TOTAL: R$" + String.format("%.2f", compraTotal()));
             bw.newLine();
             bw.write("====================================");
 
-            System.out.println("Nota fiscal gerada!");
+            System.out.println("NOTA FISCAL GERADA.");
+
+            System.out.println("\nVOCÊ PODE VER SUA NOTA EM (" + file.getAbsolutePath() + ")");
         }
         catch (IOException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("ERROR: " + e.getMessage());
         }
 
     }
