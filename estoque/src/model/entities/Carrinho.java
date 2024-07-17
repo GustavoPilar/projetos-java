@@ -4,6 +4,8 @@ import application.Main;
 import application.UI;
 
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -33,7 +35,7 @@ public final class Carrinho {
     }
 
     public static void verCarrinho() {
-        int resposta;
+        String resposta;
         do {
             System.out.println(" ------ PRODUTOS ------ ");
             for(Produto p : produtosCarrinho) {
@@ -43,8 +45,8 @@ public final class Carrinho {
             System.out.println(String.format("R$%.2f", compraTotal()));
             System.out.println("------------------------");
             System.out.println("[1] - VOLTAR");
-            resposta = Main.sc.nextInt();
-        } while (resposta != 1);
+            resposta = Main.sc.next();
+        } while (resposta.isEmpty());
     }
 
     public static void gerarNotaFiscal(File file) {
@@ -53,7 +55,9 @@ public final class Carrinho {
             bw.newLine();
             bw.write("             NOTA FISCAL            ");
             bw.newLine();
-            bw.write("Comprador: " + UI.user);
+            bw.write("Comprador: " + UI.user.toUpperCase());
+            bw.newLine();
+            bw.write("Data: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
             bw.newLine();
             bw.write("====================================");
             for(Produto p : produtosCarrinho) {

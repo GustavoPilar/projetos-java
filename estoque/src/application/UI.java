@@ -38,8 +38,9 @@ public class UI {
         int escolha;
         do {
             clearScreen();
-            System.out.println("BEM VINDO, " + user);
-            System.out.println("\n|---------------------|");
+            System.out.println("|---------------------|");
+            System.out.println("| BEM VINDO(A), " + user);
+            System.out.println("|---------------------|");
             System.out.println("|      MERCADINHO     |");
             System.out.println("|---------------------|");
             System.out.println("|  [1] - COMPRAR      |");
@@ -151,14 +152,13 @@ public class UI {
     public static void showProducts(String departamento) throws IOException, InterruptedException {
         Set<Produto> temp = new TreeSet<>(produtos);
         temp.removeIf(x -> !Objects.equals(x.getDepartamento().getNomeDepartamento(), departamento));
+        temp.removeIf(x -> x.getQuantidade() == 0);
         Produto[] produtosTemp = new Produto[temp.size()];
 
         System.out.println("\nPRODUTOS DE " + departamento + ":");
         int i = 0;
+        System.out.println("[0] - VOLTAR\n");
         for(Produto p : temp) {
-            if(p.getQuantidade() == 0) {
-                temp.remove(p);
-            }
             produtosTemp[i] = p;
             System.out.println("[" + (i+1) + "] - " + p);
             i++;
@@ -168,22 +168,31 @@ public class UI {
         Main.sc.nextLine();
         int codeProduto = Main.sc.nextInt();
 
-        while(!(codeProduto > 0 && codeProduto < produtosTemp.length)) {
+        while(!(codeProduto >= 0 && codeProduto < produtosTemp.length)) {
             System.out.println("VALOR INVÁLIDO. DIGITE NOVAMENTE: ");
             codeProduto = Main.sc.nextInt();
         }
 
+        if(codeProduto == 0) {
+            return;
+        }
+
         clearScreen();
         System.out.println("\nPODUTO DE " + departamento + ":");
+        System.out.println("[0] - VOLTAR\n");
         System.out.println("|| " + produtosTemp[codeProduto-1]);
 
         for (Produto p : produtos) {
             if(p.getNome().equals(produtosTemp[codeProduto-1].getNome())) {
                 System.out.print("DIGITE A QUANTIDADE DE " + p.getNome() + ": ");
                 int quantidade = Main.sc.nextInt();
-                while(!(quantidade > 0 && quantidade <= p.getQuantidade())) {
+                while(!(quantidade >= 0 && quantidade <= p.getQuantidade())) {
                     System.out.println("QUANTIDADE INVÁLIDA. DIGITE NOVAMENTE: ");
                     quantidade = Main.sc.nextInt();
+                }
+
+                if(quantidade == 0) {
+                    break;
                 }
 
                 Produto produto = new Produto(p.getNome(), p.getPreco(), p.getDepartamento(), quantidade);
