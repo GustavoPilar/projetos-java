@@ -52,9 +52,9 @@ public final class Produto implements Comparable<Produto>{
 
     @Override
     public String toString() {
-        return getNome() + ", R$"
+        return getNome() + " - R$"
                 + String.format("%.2f", getPreco())
-                + ", quantidade: " + getQuantidade();
+                + " - quantidade: " + getQuantidade();
     }
 
     @Override

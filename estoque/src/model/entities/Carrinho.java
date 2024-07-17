@@ -1,6 +1,7 @@
 package model.entities;
 
 import application.Main;
+import application.UI;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -74,6 +75,8 @@ public final class Carrinho {
             bw.write("Valor total: R$" + String.format("%.2f", compraTotal()));
             bw.newLine();
             bw.write("====================================");
+
+            System.out.println("Nota fiscal gerada!");
         }
         catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
