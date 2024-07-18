@@ -4,10 +4,7 @@ import model.entities.Carrinho;
 import model.entities.Departamento;
 import model.entities.Produto;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -15,27 +12,13 @@ import java.util.TreeSet;
 
 public class UI {
     static Set<Produto> produtos = new HashSet<>();
-    static File path;
     public static String user = System.getProperty("user.name");
-
-    public static void init() throws IOException, InterruptedException {
-        clearScreen();
-        System.out.println("QUAL O CAMINHO (PATH) DO DOCUMENTO? ");
-        System.out.println("EXEMPLO DE CAMINHO: C:\\temp\\arquivo.txt");
-        System.out.println("O ARQUIVO DEVERÁ SER DO FORMATO .txt (TEXTO) E DO TIPO CSV (VALORES SEPARADOS POR VÍRGULA.");
-        System.out.println("EXEMPLO DE DADOS DO ARQUIVO: Nome do produto,Preço,Departamento,Quantidade em estoque");
-        System.out.println("EXEMPLO DE COMO DEVE SER O ARQUIVO: \n" +
-                "Pão Francês,0,99,Padaria,33\n" +
-                "Refrigerante Coca-Cola,7,99,Bebidas,95\n" +
-                "(...)");
-        System.out.println("REPARE QUE NÃO DEVERÁ CONTER ESPAÇOS ENTRE AS VÍGULAS COM AS PALAVRAS.");
-        System.out.print("CAMINHO: ");
-        path = new File(Main.sc.next());
-        front();
-    }
+    static File path = new File(System.getProperty("user.dir") + "\\market_products.txt");
 
     public static void front() throws IOException, InterruptedException {
         int escolha;
+        criarEstoque();
+
         do {
             clearScreen();
             System.out.println("|---------------------|");
@@ -62,6 +45,15 @@ public class UI {
                 clearScreen();
                 Carrinho.gerarNotaFiscal(new File("C:\\Users\\" + user + "\\Downloads\\notaFiscal.txt"));
                 break;
+            }
+            if(escolha == 4) {
+                System.out.println("DESEJA SAIR MESMO?\n" +
+                        "[1] - NÃO\n" +
+                        "[2] - SIM\n");
+                escolha = Main.sc.nextInt();
+                if(escolha == 2) {
+                    escolha = 4;
+                }
             }
         } while (escolha != 4);
 
@@ -92,7 +84,7 @@ public class UI {
             do {
                 clearScreen();
                 System.out.println("\n|---------------------|");
-                System.out.println("|     DEPARTAMENTO    |");
+                System.out.println("|     DEPARTAMENTOS   |");
                 System.out.println("|---------------------|");
                 System.out.println("|  [1] - PADARIA      |");
                 System.out.println("|  [2] - BEBIDAS      |");
@@ -104,7 +96,7 @@ public class UI {
                 System.out.println("|  [7] - CARRINHO     |");
                 System.out.println("|  [8] - VOLTAR       |");
                 System.out.println("|---------------------|");
-                System.out.print("ESOLHA: ");
+                System.out.print("ESCOLHA: ");
                 escolha = Main.sc.nextInt();
 
                 while (escolha < 1 || escolha > 8) {
@@ -168,7 +160,7 @@ public class UI {
         Main.sc.nextLine();
         int codeProduto = Main.sc.nextInt();
 
-        while(!(codeProduto >= 0 && codeProduto < produtosTemp.length)) {
+        while(!(codeProduto >= 0 && codeProduto <= produtosTemp.length)) {
             System.out.println("VALOR INVÁLIDO. DIGITE NOVAMENTE: ");
             codeProduto = Main.sc.nextInt();
         }
@@ -203,5 +195,48 @@ public class UI {
                 Thread.sleep(1000);
             }
         }
+    }
+
+    public static void criarEstoque() {
+        File outputFile = procurarArquivo(new File("C:\\Users\\" + user + "\\OneDrive\\Documetos"), "\\estoqueProdutos.txt");
+        if (outputFile == null) {
+            outputFile = new File("C:\\Users\\" + user + "\\Downloads\\estoqueProdutos.txt");
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String line = br.readLine();
+            while (line != null) {
+                try(BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile, true))) {
+                    bw.write(line);
+                    bw.newLine();
+                }
+                catch (Exception e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+                line = br.readLine();
+            }
+        }
+        catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
+        }
+    }
+
+    public static File procurarArquivo(File dir, String fileNameToFind) {
+        if (dir.isDirectory()) {
+            File[] files = dir.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isDirectory()) {
+                        File found = procurarArquivo(file, fileNameToFind);
+                        if (found != null) {
+                            return found;
+                        }
+                    } else if (fileNameToFind.equals(file.getName())) {
+                        return file;
+                    }
+                }
+            }
+        }
+        return null;
     }
 }
