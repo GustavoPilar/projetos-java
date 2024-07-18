@@ -10,10 +10,10 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class UI {
-    static Set<Produto> produtos = new HashSet<>();
-    public static String user = System.getProperty("user.name");
-    static File path = new File(System.getProperty("user.dir") + "\\market_products.txt");
+public final class UI {
+    private static final Set<Produto> produtos = new HashSet<>();
+    private static final String user = System.getProperty("user.name");
+    private static final File path = new File(System.getProperty("user.dir") + "\\market_products.txt");
 
     public static void front() throws IOException, InterruptedException {
         int escolha;
@@ -21,44 +21,73 @@ public class UI {
 
         do {
             clearScreen();
-            System.out.println("|---------------------|");
-            System.out.println("| BEM VINDO(A), " + user.toUpperCase());
-            System.out.println("|---------------------|");
-            System.out.println("|      MERCADINHO     |");
-            System.out.println("|---------------------|");
-            System.out.println("|  [1] - COMPRAR      |");
-            System.out.println("|  [2] - CARRINHO     |");
-            System.out.println("|  [3] - NOTA FISCAL  |");
-            System.out.println("|  [4] - SAIR         |");
-            System.out.println("|---------------------|");
-            System.out.print("ESCOLHA: ");
+            mostrarMenu();
             escolha = Main.sc.nextInt();
-            if (escolha == 1) {
-                clearScreen();
-                comprar();
-            }
-            if (escolha == 2) {
-                clearScreen();
-                Carrinho.verCarrinho();
-            }
-            if (escolha == 3) {
-                clearScreen();
-                Carrinho.gerarNotaFiscal(new File("C:\\Users\\" + user + "\\Downloads\\notaFiscal.txt"));
-                break;
-            }
-            if(escolha == 4) {
-                System.out.println("DESEJA SAIR MESMO?\n" +
-                        "[1] - NÃO\n" +
-                        "[2] - SIM\n");
-                escolha = Main.sc.nextInt();
-                if(escolha == 2) {
+            switch (escolha) {
+                case 1 -> comprar();
+                case 2 -> Carrinho.verCarrinho();
+                case 3 -> {
+                    Carrinho.gerarNotaFiscal(new File(System.getProperty("user.home") + "\\Downloads\\notaFiscal.txt"));
                     escolha = 4;
+                    break;
                 }
+                case 4 -> {
+                    System.out.println("DESEJA SAIR MESMO?\n[1] - NÃO\n[2] - SIM\n");
+                    escolha = Main.sc.nextInt();
+                    if (escolha == 2) {
+                        escolha = 4;
+                    }
+                    break;
+                }
+                default -> System.out.println("Opção inválida. Tente novamente.");
             }
         } while (escolha != 4);
 
 
         System.out.println("OBRIGADO POR COMPRAR. VOLTE SEMPRE!");
+    }
+
+    public static void mostrarMenu() {
+        System.out.println("|---------------------|");
+        System.out.println("| BEM VINDO(A), " + user.toUpperCase());
+        System.out.println("|---------------------|");
+        System.out.println("|      MERCADINHO     |");
+        System.out.println("|---------------------|");
+        System.out.println("|  [1] - COMPRAR      |");
+        System.out.println("|  [2] - CARRINHO     |");
+        System.out.println("|  [3] - NOTA FISCAL  |");
+        System.out.println("|  [4] - SAIR         |");
+        System.out.println("|---------------------|");
+        System.out.print("ESCOLHA: ");
+    }
+
+    public static void mostrarDepartamentos() {
+        System.out.println("\n|---------------------|");
+        System.out.println("|     DEPARTAMENTOS   |");
+        System.out.println("|---------------------|");
+        System.out.println("|  [1] - PADARIA      |");
+        System.out.println("|  [2] - BEBIDAS      |");
+        System.out.println("|  [3] - CARNES       |");
+        System.out.println("|  [4] - HIGIENE      |");
+        System.out.println("|  [5] - FRUTAS       |");
+        System.out.println("|  [6] - FRIOS        |");
+        System.out.println("|---------------------|");
+        System.out.println("|  [7] - CARRINHO     |");
+        System.out.println("|  [8] - VOLTAR       |");
+        System.out.println("|---------------------|");
+        System.out.print("ESCOLHA: ");
+    }
+
+    private static String getDepartamentoNome(int escolha) {
+        return switch (escolha) {
+            case 1 -> "PADARIA";
+            case 2 -> "BEBIDAS";
+            case 3 -> "CARNES";
+            case 4 -> "HIGIENE";
+            case 5 -> "FRUTAS";
+            case 6 -> "FRIOS";
+            default -> throw new IllegalArgumentException("Departamento inválido");
+        };
     }
 
     public static void clearScreen() throws IOException, InterruptedException {
@@ -83,73 +112,43 @@ public class UI {
             int escolha;
             do {
                 clearScreen();
-                System.out.println("\n|---------------------|");
-                System.out.println("|     DEPARTAMENTOS   |");
-                System.out.println("|---------------------|");
-                System.out.println("|  [1] - PADARIA      |");
-                System.out.println("|  [2] - BEBIDAS      |");
-                System.out.println("|  [3] - CARNES       |");
-                System.out.println("|  [4] - HIGIENE      |");
-                System.out.println("|  [5] - FRUTAS       |");
-                System.out.println("|  [6] - FRIOS        |");
-                System.out.println("|---------------------|");
-                System.out.println("|  [7] - CARRINHO     |");
-                System.out.println("|  [8] - VOLTAR       |");
-                System.out.println("|---------------------|");
-                System.out.print("ESCOLHA: ");
+                mostrarDepartamentos();
                 escolha = Main.sc.nextInt();
 
                 while (escolha < 1 || escolha > 8) {
                     System.out.print("VALOR INVÁLIDO. DIGITE NOVAMENTE: ");
                     escolha = Main.sc.nextInt();
                 }
-
-                if (escolha == 1) {
-                    clearScreen();
-                    showProducts("PADARIA");
-                }
-                if (escolha == 2) {
-                    clearScreen();
-                    showProducts("BEBIDAS");
-                }
-                if (escolha == 3) {
-                    clearScreen();
-                    showProducts("CARNES");
-                }
-                if (escolha == 4) {
-                    clearScreen();
-                    showProducts("HIGIENE");
-                }
-                if (escolha == 5) {
-                    clearScreen();
-                    showProducts("FRUTAS");
-                }
-                if (escolha == 6) {
-                    clearScreen();
-                    showProducts("FRIOS");
-                }
-                if (escolha == 7) {
-                    clearScreen();
-                    Carrinho.verCarrinho();
+                if (escolha >= 1 && escolha <= 7) {
+                    if(escolha == 7) {
+                        clearScreen();
+                        Carrinho.verCarrinho();
+                    }
+                    else {
+                        String departamento = getDepartamentoNome(escolha);
+                        clearScreen();
+                        showProducts(departamento);
+                    }
+                } else if (escolha != 8) {
+                    System.out.println("Opção inválida. Tente novamente.");
                 }
             } while (escolha != 8);
 
 
         }
         catch (Exception e) {
-            System.out.println("ERROR: " + e.getMessage());
+            System.out.println("ERRO AO LER O ARQUIVO: " + e.getMessage());
         }
     }
 
     public static void showProducts(String departamento) throws IOException, InterruptedException {
         Set<Produto> temp = new TreeSet<>(produtos);
-        temp.removeIf(x -> !Objects.equals(x.getDepartamento().getNomeDepartamento(), departamento));
-        temp.removeIf(x -> x.getQuantidade() == 0);
+        temp.removeIf(x -> !Objects.equals(x.getDepartamento().getNomeDepartamento(), departamento) || x.getQuantidade() == 0);
         Produto[] produtosTemp = new Produto[temp.size()];
 
         System.out.println("\nPRODUTOS DE " + departamento + ":");
-        int i = 0;
         System.out.println("[0] - VOLTAR\n");
+        int i = 0;
         for(Produto p : temp) {
             produtosTemp[i] = p;
             System.out.println("[" + (i+1) + "] - " + p);
@@ -170,49 +169,41 @@ public class UI {
         }
 
         clearScreen();
+        Produto produtoEscolhido = produtosTemp[codeProduto-1];
         System.out.println("\nPODUTO DE " + departamento + ":");
         System.out.println("[0] - VOLTAR\n");
-        System.out.println("|| " + produtosTemp[codeProduto-1]);
+        System.out.println("|| " + produtoEscolhido);
 
-        for (Produto p : produtos) {
-            if(p.getNome().equals(produtosTemp[codeProduto-1].getNome())) {
-                System.out.print("DIGITE A QUANTIDADE DE " + p.getNome() + ": ");
-                int quantidade = Main.sc.nextInt();
-                while(!(quantidade >= 0 && quantidade <= p.getQuantidade())) {
-                    System.out.println("QUANTIDADE INVÁLIDA. DIGITE NOVAMENTE: ");
-                    quantidade = Main.sc.nextInt();
-                }
 
-                if(quantidade == 0) {
-                    break;
-                }
+        System.out.print("DIGITE A QUANTIDADE DE " + produtoEscolhido.getNome() + ": ");
+        int quantidade = Main.sc.nextInt();
+        while(!(quantidade >= 0 && quantidade <= produtoEscolhido.getQuantidade())) {
+            System.out.println("QUANTIDADE INVÁLIDA. DIGITE NOVAMENTE: ");
+            quantidade = Main.sc.nextInt();
+        }
 
-                Produto produto = new Produto(p.getNome(), p.getPreco(), p.getDepartamento(), quantidade);
-                Carrinho.addCarrinho(produto, produto.getQuantidade());
-                p.setQuantidade(p.getQuantidade() - quantidade);
-
-                System.out.println("ADICIONADO AO CARRINHO!");
-                Thread.sleep(1000);
-            }
+        if(quantidade > 0) {
+            Produto produto = new Produto(produtoEscolhido.getNome(), produtoEscolhido.getPreco(), produtoEscolhido.getDepartamento(), quantidade);
+            Carrinho.addCarrinho(produto, quantidade);
+            produtoEscolhido.setQuantidade(produtoEscolhido.getQuantidade() - quantidade);
+            System.out.println("ADICIONADO AO CARRINHO!");
+            Thread.sleep(1000);
         }
     }
 
     public static void criarEstoque() {
-        File outputFile = procurarArquivo(new File("C:\\Users\\" + user + "\\OneDrive\\Documetos"), "\\estoqueProdutos.txt");
+        File outputFile = procurarArquivo(new File(System.getProperty("user.home") + "\\OneDrive\\Documetos"), "\\estoqueProdutos.txt");
         if (outputFile == null) {
-            outputFile = new File("C:\\Users\\" + user + "\\Downloads\\estoqueProdutos.txt");
+            outputFile = new File(System.getProperty("user.home") + "\\Downloads\\estoqueProdutos.txt");
         }
 
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(path));
+             BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile, true))) {
             String line = br.readLine();
             while (line != null) {
-                try(BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile, true))) {
-                    bw.write(line);
-                    bw.newLine();
-                }
-                catch (Exception e) {
-                    System.out.println("Error: " + e.getMessage());
-                }
+                bw.write(line);
+                bw.newLine();
+
                 line = br.readLine();
             }
         }

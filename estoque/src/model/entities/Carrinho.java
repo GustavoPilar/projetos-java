@@ -1,9 +1,11 @@
 package model.entities;
 
 import application.Main;
-import application.UI;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashSet;
@@ -12,6 +14,9 @@ import java.util.Set;
 public final class Carrinho {
 
     public static Set<Produto> produtosCarrinho = new LinkedHashSet<>();
+
+    private Carrinho() {
+    }
 
     public static void addCarrinho(Produto produto, Integer quantidade) {
 
@@ -22,27 +27,25 @@ public final class Carrinho {
                 produtosCarrinho.removeIf(x -> x.getNome().equals(p.getNome()));
             }
         }
-
         produtosCarrinho.add(produto);
     }
 
     public static Double compraTotal() {
-        double sum = 0.0;
-        for(Produto p : produtosCarrinho) {
-            sum += p.getPreco() * p.getQuantidade();
-        }
-        return sum;
+        return produtosCarrinho.stream().mapToDouble(p -> p.getPreco() * p.getQuantidade()).sum();
     }
 
     public static void verCarrinho() {
         String resposta;
         do {
             System.out.println(" ------ PRODUTOS ------ ");
-            for(Produto p : produtosCarrinho) {
-                System.out.println(p);
+            if(produtosCarrinho.isEmpty()) {
+                System.out.println("Nenhum produto....");
+            }
+            else {
+                produtosCarrinho.forEach(System.out::println);
             }
             System.out.println("------------------------");
-            System.out.println(String.format("R$%.2f", compraTotal()));
+            System.out.printf("R$%.2f%n", compraTotal());
             System.out.println("------------------------");
             System.out.println("[1] - VOLTAR");
             resposta = Main.sc.next();
@@ -55,11 +58,12 @@ public final class Carrinho {
             bw.newLine();
             bw.write("             NOTA FISCAL            ");
             bw.newLine();
-            bw.write("Comprador: " + UI.user.toUpperCase());
+            bw.write("Comprador: " + System.getProperty("user.name").toUpperCase());
             bw.newLine();
             bw.write("Data: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
             bw.newLine();
             bw.write("====================================");
+
             for(Produto p : produtosCarrinho) {
                 bw.newLine();
                 bw.write("PRODUTO: " + p.getNome());
@@ -74,19 +78,23 @@ public final class Carrinho {
                 bw.newLine();
                 bw.write("====================================");
             }
+
             bw.newLine();
             bw.write("VALOR TOTAL: R$" + String.format("%.2f", compraTotal()));
             bw.newLine();
             bw.write("====================================");
 
             System.out.println("NOTA FISCAL GERADA.");
-
             System.out.println("\nVOCÊ PODE VER SUA NOTA EM (" + file.getAbsolutePath() + ")");
         }
         catch (IOException e) {
-            System.out.println("ERROR: " + e.getMessage());
+            System.out.println("Erro ao criar a nota fiscal: " + e.getMessage());
         }
+    }
 
+    public static void limparCarrinho() {
+        produtosCarrinho.clear();
+        System.out.println("Carrinho limpo.");
     }
 }
 
